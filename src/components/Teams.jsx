@@ -1,39 +1,47 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner'
 
-export default class Teams extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            teams: []
-        }
-        this.getData = this.getData.bind(this);
-    }
+import {GET_TEAMS} from './../actions';
+
+class Teams extends Component {
 
     componentWillMount() {
-        //setTimeout(this.getData, 4000);
-        this.getData();
-    }
-
-    getData() {
-        const teams_url = "https://statsapi.web.nhl.com/api/v1/teams"
-
-        fetch(teams_url)
-            .then(data => data.json())
-            .then(result => this.setState({teams: result.teams}));
+        this.props.getTeams();
     }
 
     render() {
-        const { changeTeamCb } = this.props;
+        const { changeTeamCb, teams, loading, error } = this.props;
+
+        if (error) {
+            return <div className="error">Getting data failed</div>
+        }
 
         return (
         <div className="teamscontainer">
-            {this.state.teams && this.state.teams.length > 0 ? this.state.teams.map((team, index) => {
+            {!loading ? teams.map((team, index) => {
                 return (
                     <div key={index} className="teamcontainer" onClick={() => changeTeamCb(team.id)}>
                         {team.name}
                     </div>
                 );
-            }) : <div>Fetching data</div>}
+            }) : <Loader type="Hearts" color="red" height={80} width={80} />}
         </div>);
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        teams: state.teams.teams,
+        loading:  state.teams.loading,
+        error:  state.teams.error
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    getTeams() {
+        dispatch(GET_TEAMS());
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Teams);
