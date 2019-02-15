@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Loader from 'react-loader-spinner'
+
 import { GET_TEAM_ROSTER, CHANGE_ACTIVE_PLAYER } from '../actions';
 
 class Team extends Component {
@@ -17,7 +19,9 @@ class Team extends Component {
     }
 
     render() {
-        const { players } = this.props;
+        const { players, loading } = this.props;
+
+        const loadingItem = !loading ? <div>Please select the team</div> : <Loader type="Hearts" color="red" height={80} width={80} />; 
 
         return (
         <div className="rostercontainer">
@@ -27,7 +31,7 @@ class Team extends Component {
                         {player.person.fullName}
                     </div>
                 );
-            }) : <div>Fetching data</div>}
+            }) : loadingItem}
         </div>);
     }
 }
@@ -35,7 +39,9 @@ class Team extends Component {
 const mapStateToProps = (state) => {
     return {
         teamId: state.teams.activeTeam,
-        players: state.roster.players
+        players: state.roster.players,
+        loading:  state.roster.loading,
+        error:  state.roster.error
     };
 };
 

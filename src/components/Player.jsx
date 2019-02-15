@@ -31,7 +31,7 @@ class Player extends Component {
                         {key}: {data[key].toString()}
                     </div>
                 );
-            }) : <div>Fetching data</div>}
+            }) : <div>Please select the player from the team.</div>}
         </div>);
     }
 }
