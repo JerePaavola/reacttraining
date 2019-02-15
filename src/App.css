@@ -1,5 +1,39 @@
 .App {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  width: 34%;
+}
+
+.column1 {
+  background-color: lightblue
+}
+
+.column2 {
+  background-color: lightgreen
+}
+
+.column3 {
+  background-color: olivedrab
+}
+
+.title1 {
+  color: red;
+}
+
+.title2 {
+  color: green;
+}
+
+.title3 {
+  color: blue;
+}
+
+.teamcontainer {
+  margin: 5px;
 }
 
 .App-logo {
