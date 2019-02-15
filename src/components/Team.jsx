@@ -1,43 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { GET_TEAM_ROSTER, CHANGE_ACTIVE_PLAYER } from '../actions';
 
 class Team extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            players: []
-        }
-        this.getData = this.getData.bind(this);
-    }
-
+    
     componentWillMount() {
-        this.getData(this.props);
+        if (this.props.teamId) {
+            this.props.getTeamRoster(this.props.teamId);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.teamId !== this.props.teamId) {
-            this.getData(nextProps);
-        }
-    }
-
-    getData(props) {
-        if (props.teamId) {
-            const url = `https://statsapi.web.nhl.com/api/v1/teams/${props.teamId}/roster`
-
-            fetch(url)
-                .then(data => data.json())
-                .then(result => this.setState({players: result.roster}));
+            this.props.getTeamRoster(nextProps.teamId);
         }
     }
 
     render() {
-        const { changePlayerCb } = this.props;
+        const { players } = this.props;
 
         return (
         <div className="rostercontainer">
-            {this.state.players && this.state.players.length > 0 ? this.state.players.map((player, index) => {
+            {players && players.length > 0 ? players.map((player, index) => {
                 return (
-                    <div key={index} className="rosterplayercontainer" onClick={() => changePlayerCb(player.person.id)}>
+                    <div key={index} className="rosterplayercontainer" onClick={() => this.props.changeActivePlayer(player.person.id)}>
                         {player.person.fullName}
                     </div>
                 );
@@ -48,8 +34,19 @@ class Team extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        teamId: state.teams.activeTeam
+        teamId: state.teams.activeTeam,
+        players: state.roster.players
     };
 };
 
-export default connect(mapStateToProps, undefined)(Team);
+const mapDispatchToProps = (dispatch) => ({
+    getTeamRoster(teamId) {
+        dispatch(GET_TEAM_ROSTER(teamId));
+    },
+    changeActivePlayer(playerId) {
+        dispatch(CHANGE_ACTIVE_PLAYER(playerId));
+    }
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Team);

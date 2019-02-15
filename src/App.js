@@ -6,20 +6,6 @@ import Team from './components/Team';
 import Player from './components/Player';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeTeam: null,
-      activePlayer: null
-    }
-    this.changePlayer = this.changePlayer.bind(this);
-  }
-
-
-  changePlayer(playerId) {
-    this.setState({activePlayer: playerId});
-  }
-
   render() {
     return (
       <div className="App">
@@ -29,11 +15,11 @@ class App extends Component {
         </div>
         <div className="column column2">
           <Title title="Players"  className="title2"/>
-          <Team teamId={this.state.activeTeam} changePlayerCb={this.changePlayer}/>
+          <Team />
         </div>
         <div className="column column3">
           <Title title="Player" className="title3"/>
-          <Player playerId={this.state.activePlayer}/>
+          <Player />
         </div>
       </div>
     );

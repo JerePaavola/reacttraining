@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 
-import {teamReducer} from './TeamReducer';
+import { teamReducer } from './TeamReducer';
+import { rosterReducer } from './RosterReducer';
 
 const rootReducer = combineReducers({
-  teams: teamReducer
+  teams: teamReducer,
+  roster: rosterReducer
 })
 
 export default rootReducer
