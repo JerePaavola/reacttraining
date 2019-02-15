@@ -12,13 +12,9 @@ class App extends Component {
       activeTeam: null,
       activePlayer: null
     }
-    this.changeTeam = this.changeTeam.bind(this);
     this.changePlayer = this.changePlayer.bind(this);
   }
 
-  changeTeam(teamId) {
-    this.setState({activeTeam: teamId});
-  }
 
   changePlayer(playerId) {
     this.setState({activePlayer: playerId});
@@ -29,7 +25,7 @@ class App extends Component {
       <div className="App">
         <div className="column column1">
           <Title title="Teams" className="title1"/>
-          <Teams changeTeamCb={this.changeTeam}/>
+          <Teams />
         </div>
         <div className="column column2">
           <Title title="Players"  className="title2"/>

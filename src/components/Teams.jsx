@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Loader from 'react-loader-spinner'
 
-import {GET_TEAMS} from './../actions';
+import {GET_TEAMS, CHANGE_ACTIVE_TEAM} from './../actions';
 
 class Teams extends Component {
 
@@ -11,7 +11,7 @@ class Teams extends Component {
     }
 
     render() {
-        const { changeTeamCb, teams, loading, error } = this.props;
+        const { teams, loading, error } = this.props;
 
         if (error) {
             return <div className="error">Getting data failed</div>
@@ -21,7 +21,7 @@ class Teams extends Component {
         <div className="teamscontainer">
             {!loading ? teams.map((team, index) => {
                 return (
-                    <div key={index} className="teamcontainer" onClick={() => changeTeamCb(team.id)}>
+                    <div key={index} className="teamcontainer" onClick={() => this.props.changeActiveTeam(team.id)}>
                         {team.name}
                     </div>
                 );
@@ -41,6 +41,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     getTeams() {
         dispatch(GET_TEAMS());
+    },
+    changeActiveTeam(id) {
+        dispatch(CHANGE_ACTIVE_TEAM(id));
     }
 });
 

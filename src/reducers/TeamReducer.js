@@ -2,13 +2,15 @@ import { handleActions } from 'redux-actions';
 import { 
     GET_TEAMS,
     GET_TEAMS_FAILURE, 
-    GET_TEAMS_SUCCESS
+    GET_TEAMS_SUCCESS,
+    CHANGE_ACTIVE_TEAM
 } from './../actions';
 
 const initialState = {
   error: false,
   loading: false,
-  teams: []
+  teams: [],
+  activeTeam: undefined
 };
 
 export const teamReducer = handleActions({
@@ -20,5 +22,8 @@ export const teamReducer = handleActions({
     },
     [GET_TEAMS_SUCCESS().type]: (state, action) => {
         return {loading: false, error: false, teams: action.payload};
+    },
+    [CHANGE_ACTIVE_TEAM().type]: (state, action) => {
+      return {...state, activeTeam: action.payload};
     },
 }, initialState);
