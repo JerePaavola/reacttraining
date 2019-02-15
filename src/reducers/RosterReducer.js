@@ -4,7 +4,8 @@ import {
     GET_TEAM_ROSTER_FAILURE,
     GET_TEAM_ROSTER_SUCCESS,
     CHANGE_ACTIVE_PLAYER,
-    GET_PLAYER_DATA_SUCCESS
+    GET_PLAYER_DATA_SUCCESS,
+    CHANGE_ACTIVE_TEAM
 } from './../actions';
 
 const initialState = {
@@ -23,7 +24,7 @@ export const rosterReducer = handleActions({
       return {...state, loading: false, error: true};
     },
     [GET_TEAM_ROSTER_SUCCESS().type]: (state, action) => {
-        return {loading: false, error: false, players: action.payload};
+        return {...state, loading: false, error: false, players: action.payload};
     },
     [CHANGE_ACTIVE_PLAYER().type]: (state, action) => {
       return {...state, activePlayer: action.payload};
@@ -31,4 +32,7 @@ export const rosterReducer = handleActions({
     [GET_PLAYER_DATA_SUCCESS().type]: (state, action) => {
       return {...state, activePlayerData: action.payload};
     },
+    [CHANGE_ACTIVE_TEAM().type]: (state, action) => {
+      return {...state, activePlayer: undefined, activePlayerData: {}};
+    }
 }, initialState);

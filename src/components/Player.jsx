@@ -11,7 +11,7 @@ class Player extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.playerId !== this.props.playerId) {
+        if(nextProps.playerId !== this.props.playerId && nextProps.playerId) {
             this.props.getPlayerData(nextProps.playerId);
         }
     }

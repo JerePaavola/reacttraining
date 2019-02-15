@@ -21,7 +21,7 @@ export const teamReducer = handleActions({
       return {...state, loading: false, error: true};
     },
     [GET_TEAMS_SUCCESS().type]: (state, action) => {
-        return {loading: false, error: false, teams: action.payload};
+        return {...state, loading: false, error: false, teams: action.payload};
     },
     [CHANGE_ACTIVE_TEAM().type]: (state, action) => {
       return {...state, activeTeam: action.payload};
