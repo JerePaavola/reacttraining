@@ -4,7 +4,10 @@ import axios from 'axios';
 import { 
     GET_TEAM_ROSTER, 
     GET_TEAM_ROSTER_SUCCESS, 
-    GET_TEAM_ROSTER_FAILURE
+    GET_TEAM_ROSTER_FAILURE,
+    GET_PLAYER_DATA,
+    GET_PLAYER_DATA_FAILURE, 
+    GET_PLAYER_DATA_SUCCESS
 } from '../actions';
 
 function* getTeamRoster(action) {
@@ -16,6 +19,16 @@ function* getTeamRoster(action) {
     }
 }
 
-const watchGetTeamRoster = takeEvery(GET_TEAM_ROSTER().type, getTeamRoster);
+function* getPlayerData(action) {
+    try {
+        const response = yield call(() => axios.get(`https://statsapi.web.nhl.com/api/v1/people/${action.payload}`));
+        yield put(GET_PLAYER_DATA_SUCCESS(response.data.people[0]));
+    } catch (err) {
+        yield put(GET_PLAYER_DATA_FAILURE(err));
+    }
+}
 
-export default [watchGetTeamRoster];
+const watchGetTeamRoster = takeEvery(GET_TEAM_ROSTER().type, getTeamRoster);
+const watchGetPlayerData = takeEvery(GET_PLAYER_DATA().type, getPlayerData);
+
+export default [watchGetTeamRoster, watchGetPlayerData];

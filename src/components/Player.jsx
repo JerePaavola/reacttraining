@@ -1,47 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { GET_PLAYER_DATA } from '../actions';
 
 class Player extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: {}
-        }
-        this.getData = this.getData.bind(this);
-    }
-
+    
     componentWillMount() {
-        this.getData(this.props);
+        if (this.props.playerId) {
+            this.props.getPlayerData(this.props.playerId);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.playerId !== this.props.playerId) {
-            this.getData(nextProps);
-        }
-    }
-
-    getData(props) {
-        console.log("Getting data");
-        if (props.playerId) {
-            const url = `https://statsapi.web.nhl.com/api/v1/people/${props.playerId}`
-
-            fetch(url)
-                .then(data => data.json())
-                .then(result => this.setState({data: result.people[0]}));
+            this.props.getPlayerData(nextProps.playerId);
         }
     }
 
     render() {
+        const { data } = this.props;
+
         return (
         <div className="playercontainer">
-            {this.state.data !== {} ? Object.keys(this.state.data).map((key, index) => {
-                if (typeof this.state.data[key] == 'object') {
+            {data && Object.keys(data).length > 0 ? Object.keys(data).map((key, index) => {
+                if (typeof data[key] == 'object') {
                     return undefined;
                 }
 
                 return (
                     <div key={index} className="playeritemcontainer">
-                        {key}: {this.state.data[key].toString()}
+                        {key}: {data[key].toString()}
                     </div>
                 );
             }) : <div>Fetching data</div>}
@@ -49,11 +36,17 @@ class Player extends Component {
     }
 }
 
-
 const mapStateToProps = (state) => {
     return {
-        playerId: state.roster.activePlayer
+        playerId: state.roster.activePlayer,
+        data: state.roster.activePlayerData
     };
 };
 
-export default connect(mapStateToProps, undefined)(Player);
+const mapDispatchToProps = (dispatch) => ({
+    getPlayerData(playerId) {
+        dispatch(GET_PLAYER_DATA(playerId));
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);

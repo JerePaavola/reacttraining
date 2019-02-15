@@ -11,3 +11,7 @@ export const GET_TEAM_ROSTER_SUCCESS = createAction('GET_TEAM_ROSTER_SUCCESS');
 export const GET_TEAM_ROSTER_FAILURE = createAction('GET_TEAM_ROSTER_FAILURE');
 
 export const CHANGE_ACTIVE_PLAYER = createAction('CHANGE_ACTIVE_PLAYER');
+
+export const GET_PLAYER_DATA = createAction('GET_PLAYER_DATA');
+export const GET_PLAYER_DATA_SUCCESS = createAction('GET_PLAYER_DATA_SUCCESS');
+export const GET_PLAYER_DATA_FAILURE = createAction('GET_PLAYER_DATA_FAILURE');

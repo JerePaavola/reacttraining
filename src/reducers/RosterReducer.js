@@ -3,14 +3,16 @@ import {
     GET_TEAM_ROSTER,
     GET_TEAM_ROSTER_FAILURE,
     GET_TEAM_ROSTER_SUCCESS,
-    CHANGE_ACTIVE_PLAYER
+    CHANGE_ACTIVE_PLAYER,
+    GET_PLAYER_DATA_SUCCESS
 } from './../actions';
 
 const initialState = {
   error: false,
   loading: false,
   players: [],
-  activePlayer: undefined
+  activePlayer: undefined,
+  activePlayerData: {}
 };
 
 export const rosterReducer = handleActions({
@@ -25,5 +27,8 @@ export const rosterReducer = handleActions({
     },
     [CHANGE_ACTIVE_PLAYER().type]: (state, action) => {
       return {...state, activePlayer: action.payload};
+    },
+    [GET_PLAYER_DATA_SUCCESS().type]: (state, action) => {
+      return {...state, activePlayerData: action.payload};
     },
 }, initialState);
